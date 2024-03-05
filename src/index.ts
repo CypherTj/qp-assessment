@@ -3,6 +3,7 @@ dotenv.config();
 
 import express, { Express } from "express";
 import adminRoutes from "./routes/adminRoutes";
+import userRoutes from "./routes/userRoutes";
 import { DBService } from './services/dbService';
 
 const app: Express = express();
@@ -13,7 +14,7 @@ app.use(express.json());
 // Create table if not exists when the application starts
 DBService.createTableIfNotExists()
   .then(() => {
-    console.log(`Database table created successfully (if it didn't exist)`);
+    console.log(`Database tables created successfully (if it didn't exist)`);
   })
   .catch((error) => {
     console.error('Error creating database table:', error);
@@ -21,6 +22,7 @@ DBService.createTableIfNotExists()
   });
 
 app.use("/admin", adminRoutes);
+app.use("/user", userRoutes);
 
 app.use("/", (_req, res) => {
   res.status(404).send({
